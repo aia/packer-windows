@@ -14,6 +14,7 @@
       "guest_os_type": "windows7-64",
       "tools_upload_flavor": "windows",
       "disk_size": 61440,
+      "disk_type_id": 2,
       "vnc_port_min": 5900,
       "vnc_port_max": 5980,
       "floppy_files": [
@@ -22,7 +23,9 @@
         "./scripts/hotfix-KB3102810.bat",
         "./scripts/microsoft-updates.bat",
         "./scripts/win-updates.ps1",
-        "./scripts/openssh.ps1"
+        "./scripts/openssh.ps1",
+        "./scripts/chef.bat",
+        "./scripts/chocolatey.ps1"
       ],
       "vmx_data": {
         "RemoteDisplay.vnc.enabled": "false",
@@ -52,7 +55,9 @@
         "./scripts/microsoft-updates.bat",
         "./scripts/win-updates.ps1",
         "./scripts/openssh.ps1",
-        "./scripts/oracle-cert.cer"
+        "./scripts/oracle-cert.cer",
+        "./scripts/chef.bat",
+        "./scripts/chocolatey.ps1"
       ],
       "vboxmanage": [
         [
@@ -116,11 +121,19 @@
   ],
   "provisioners": [
     {
+      "type": "powershell",
+      "scripts": [
+          "./scripts/chocolatey.ps1",
+          "./scripts/dis-updates.ps1"
+      ]
+    },
+    {
       "type": "shell",
       "remote_path": "/tmp/script.bat",
       "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
       "scripts": [
         "./scripts/vm-guest-tools.bat",
+        "./scripts/chef.bat",
         "./scripts/vagrant-ssh.bat",
         "./scripts/disable-auto-logon.bat",
         "./scripts/enable-rdp.bat",
